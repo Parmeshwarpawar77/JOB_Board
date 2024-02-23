@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block title %}
+{% endblock %}
+{% block body %}
+        {% if messages%}
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="login-page-width">
+                <div class="login-container">
+                    <div class="content">
+                        <h2>Employer Sign Up</h2>
+                        <form method="POST" action="{% url 'employer_signup' %}">
+                            {%csrf_token%}
+                            <div class="form-group">
+                                <label for="signupUsername">Username:</label>
+                                <input type="text" name="username" for="signupUsername" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signupEmail">Email:</label>
+                                <input type="email" name="email" for="signupEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signupPassword1">Password:</label>
+                                <input type="password" name="password1" for="signupPassword1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signupPassword2">Confirm Password:</label>
+                                <input type="password" name="password2" for="signupPassword2" required>
+                            </div>
+                            <button type="submit">Sign Up</button>
+                            <p>Already have an accounct? <a href="{%url 'login_employer'%}">Login</p>
+                        </form>
+                    </div>
+                </div>
+        </div>
+{% endblock %}

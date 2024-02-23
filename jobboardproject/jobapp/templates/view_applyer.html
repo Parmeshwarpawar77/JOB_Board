@@ -1,0 +1,57 @@
+{% extends 'base1.html'%}
+{% load static %}
+{% block title %}
+{% endblock %}
+{% block body %}
+    <h1 align='center'>Applicants details for {{view.job.job_post}}</h1>
+    <table  class="table" border ="2" align="center">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Portfolio</th>
+                <th scope="col">Resume</th>
+                <th scope="col">Action</th>
+                <th scope="col">Change Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for applicants in view %}
+            <tr>
+                <td>{{applicants.name}}</td>
+                <td>{{applicants.email}}</td>
+                <td><a href="{{ applicants.website }}">Click here</a></td>
+                <td><a href="{{ applicants.cv.url }}" class="download-link"target="_blank">
+                    Resume
+                </a></td>
+                <td>{{applicants.applicant_status}}</td>
+                <td>
+                    <form method="post" action="{% url 'update_applicant_status' applicants.id %}">
+                        {% csrf_token %}
+                        <select name='applicant_status'>
+                            <option value="Pending" {% if applicants.applicant_status == 'Pending' %} selected {% endif %}>Pending</option>
+                            <option value="Approved" {% if applicants.applicant_status == 'Approved' %} selected {% endif %}>Approved</option>
+                            <option value="Rejected" {% if applicants.applicant_status == 'Rejected' %} selected {% endif %}>Rejected</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary w-10" id="refresh">Change Status</button>
+                    </form>
+                </td>
+
+            </tr>
+            {% empty %}
+                <div class="row">
+                    <div class="col"><br><br>
+                        <center><h1><b>Not applied yet</b></h1><br>
+                            <h1><i class="bi bi-0-square"></i></h1><br><br>
+                        </center>
+                    </div>
+                </div>
+            {% endfor %}
+        <tbody>
+    </table>
+    <script>
+        document.getElementById("refresh").addEventListener("click", function() {
+            window.history.back();
+        });
+    </script>
+{%endblock%}
